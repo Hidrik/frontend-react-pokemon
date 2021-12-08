@@ -5,58 +5,46 @@ import axios from "axios";
 
 function App() {
     const [isLoaded, setIsLoaded] = useState(false);
-    const [pokemons, setData] = useState([])
+    const [pokemons, setPokemonData] = useState([])
     const [nextPokemon, setNextPokemon] = useState(0)
-    const [init, setInit] = useState(true)
+
 
     useEffect(() => {
-        async function getData() {
+        const source = axios.CancelToken.source();
+        const offset = 20 * nextPokemon
+        let limit = 20
 
+        if (offset === 1100) {
+            limit = 18
+        }
+
+        setIsLoaded(false)
+
+        async function getData() {
             try {
-                const data = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`);
-                setData(data.data.results)
+                const data = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
+                setPokemonData(data.data.results)
                 setIsLoaded(true)
+                console.log(data)
             } catch (e) {
                 window.alert('Lijst van pokemon ophalen mislukt')
             }
         }
 
         getData()
-    }, [])
 
-    useEffect(() => {
-
-        if (!init) {
-            /*Hiermee zorg ik dat er nooit meer data aangevraagd kan worden dan er beschikbaar is*/
-            let offset = 20 * nextPokemon
-            let limit = 20
-            if (offset === 1100) {
-                limit = 18
-            }
-
-            async function getData() {
-                try {
-                    const data = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
-                    setData(data.data.results)
-                    setIsLoaded(true)
-                    console.log(data)
-                } catch (e) {
-                    window.alert('Lijst van pokemon ophalen mislukt')
-                }
-            }
-
-            getData()
-
-        } else {
-            setInit(false)
+        return function cleanup() {
+            source.cancel()
         }
     }, [nextPokemon])
 
 
+    /*Als de data niet geladen is:*/
     if (!isLoaded) {
-        return <p>Laden...</p>
+        return <p className='container'>Laden...</p>
+    /*Als de data geladen is:*/
     } else {
-        return <>
+        return <div className='container'>
             <button
                 disabled={nextPokemon === 0}
                 onClick={
@@ -78,7 +66,7 @@ function App() {
                     return <Pokemon key={pokemon.name} url={pokemon.url}/>
                 })
             }
-        </>
+        </div>
     }
 }
 
