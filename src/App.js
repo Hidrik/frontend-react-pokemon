@@ -39,12 +39,13 @@ function App() {
     }, [nextPokemon])
 
 
-    /*Als de data niet geladen is:*/
-    if (!isLoaded) {
-        return <p className='container'>Laden...</p>
-    /*Als de data geladen is:*/
-    } else {
-        return <div className='container'>
+
+    return !isLoaded ?
+        /*Als de data niet geladen is:*/
+        <p className='container'>Laden...</p> :
+
+        /*Als de data geladen is:*/
+        <div className='container'>
             <button
                 disabled={nextPokemon === 0}
                 onClick={
@@ -67,7 +68,10 @@ function App() {
                 })
             }
         </div>
-    }
+
+
+
+
 }
 
 export default App;
