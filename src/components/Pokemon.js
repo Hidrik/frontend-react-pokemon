@@ -30,14 +30,14 @@ function Pokemon({url}) {
     if (!isLoaded) {
         return <div>Laden...</div>
     } else {
-        return <div className='pokemon-info'>
+        return pokemon && <div className='pokemon-info'>
             <img src={pokemon.sprites.front_default} alt={pokemon.name} className='pokemon-picture'/>
             <h1 className='pokemon-title'>{toUppercaseFirstLetter(pokemon.name)}</h1>
             <p>De pokemon weegt {pokemon.weight} kg</p>
             <p>De pokemon heeft {pokemon.moves.length} moves</p>
             <p>De pokemon heeft de volgende abilities:</p>
             <ul>{pokemon.abilities.map(abilities => {
-                return <li>{abilities.ability.name}</li>})}</ul>
+                return <li>{toUppercaseFirstLetter(abilities.ability.name)}</li>})}</ul>
 
         </div>
 
