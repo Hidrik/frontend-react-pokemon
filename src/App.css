@@ -1,0 +1,23 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.pokemon-info {
+    background-color: lightskyblue;
+    padding: 20px;
+    margin: 20px;
+    border: blue solid 2px;
+    border-radius: 5px;
+}
+
+.pokemon-picture{
+    display: inline;
+}
+
+.pokemon-title{
+    display: inline;
+
+}
